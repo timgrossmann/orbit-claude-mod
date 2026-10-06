@@ -1,0 +1,8 @@
+{
+  "name": "orbit",
+  "version": "0.4.0",
+  "description": "A one-key forest game beside Claude's work. Play ORBIT in a native terminal or Desktop pane.",
+  "author": { "name": "Tigr Ventures" },
+  "homepage": "https://www.justonemoreorbit.com",
+  "repository": "https://github.com/timgrossmann/orbit-claude-mod"
+}

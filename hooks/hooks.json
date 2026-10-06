@@ -1,0 +1,4 @@
+{
+  "description": "ORBIT game pane, controls, and local personal best",
+  "modules": ["./register.js"]
+}

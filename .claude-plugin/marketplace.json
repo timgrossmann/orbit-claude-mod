@@ -1,0 +1,14 @@
+{
+  "name": "orbit",
+  "description": "The ORBIT forest game for Claude Code, from justonemoreorbit.com.",
+  "owner": {
+    "name": "Tigr Ventures"
+  },
+  "plugins": [
+    {
+      "name": "orbit",
+      "source": "./",
+      "description": "A one-key forest game beside Claude's work. Play ORBIT in a native terminal or Desktop pane."
+    }
+  ]
+}
