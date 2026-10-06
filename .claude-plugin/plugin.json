@@ -1,6 +1,6 @@
 {
   "name": "orbit",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A one-key forest game beside Claude's work. Play ORBIT in a native terminal or Desktop pane.",
   "author": { "name": "Tigr Ventures" },
   "homepage": "https://www.justonemoreorbit.com",

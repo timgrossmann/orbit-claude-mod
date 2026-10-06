@@ -2,7 +2,7 @@ import { CHARACTERS, WORLDS } from '../game/catalog.js';
 
 // Native text stays legible over the pixel forest on both surfaces. Keep the
 // card inside the existing playfield so dying never pushes controls offscreen.
-export function resultCard({ Box, Text }, game, size, retry) {
+export function resultCard({ Box, Text }, game, size) {
   const width = Math.min(38, size.columns - 2), inner = width - 4;
   const compact = width < 26 || size.rows < 20;
   const dark = game.world === 'inkwild';
@@ -30,16 +30,14 @@ export function resultCard({ Box, Text }, game, size, retry) {
       blank(), text('A little\ntoo wild.', { bold: true }), blank(),
       ...lines.map(line => text(line, { color: muted })), blank(),
       text(`${game.score} ${game.score === 1 ? 'gap' : 'gaps'} cleared`, { bold: true }),
-      text(`Personal best ${game.best}`, { color: muted }), blank(), retry,
+      text(`Personal best ${game.best}`, { color: muted }), blank(),
+      text('Press f to go again.', { bold: true }),
     ];
     height = 14 + lines.length;
   }
-  return {
-    hasRetry: !compact,
-    node: Box({ key: 'gameover', position: 'absolute',
+  return Box({ key: 'gameover', position: 'absolute',
       left: Math.floor((size.columns - width) / 2), top: Math.max(0, Math.floor((size.rows - height) / 2)),
       width, height, flexDirection: 'column', alignItems: 'center',
       paddingX: 1, paddingY: 1, borderStyle: 'round',
-      borderColor: game.newBest ? '#c9944f' : muted, backgroundColor: paper, children }),
-  };
+      borderColor: game.newBest ? '#c9944f' : muted, backgroundColor: paper, children });
 }

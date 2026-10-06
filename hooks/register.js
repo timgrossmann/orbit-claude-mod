@@ -300,13 +300,15 @@ export function register(on) {
       const labels = { ready: 'Play', playing: 'Flip', paused: 'Resume', dead: 'One more try' };
       const primary = Button({ key: 'primary', label: `${labels[game.phase]} f`, hotkey: 'f', autoFocus: true,
         onPress: () => control($, 'primary') });
-      const result = game.phase === 'dead' ? resultCard({ Box, Text }, game, size, primary) : null;
+      const result = game.phase === 'dead' ? resultCard({ Box, Text }, game, size) : null;
       if (result) {
         mounted = null;
         picture = Box({ width: size.columns, height: size.rows, position: 'relative',
-          overflow: 'hidden', children: [picture, result.node] });
+          overflow: 'hidden', children: [picture, result] });
       }
-      const controls = result?.hasRetry ? [] : [primary];
+      // Native buttons use the host's colors. Keep them on its own background
+      // so the light-mode label stays readable beside Inkwild's dark card.
+      const controls = [primary];
       if (game.phase === 'playing' || game.phase === 'paused') controls.push(Button({ key: 'pause',
         label: game.phase === 'paused' ? 'Resume p' : 'Pause p', hotkey: 'p', onPress: () => control($, 'pause') }));
       if (game.phase === 'paused' || game.phase === 'dead') controls.push(Button({ key: 'restart', label: 'Retry r', hotkey: 'r', onPress: () => control($, 'restart') }));
