@@ -26,9 +26,9 @@ This is the Claude Code edition of **[ORBIT](https://www.justonemoreorbit.com)**
 One key flips your curve. Thread the gaps, keep moving, and try once more.
 
 <p align="center">
-  <img src="assets/readme/orbit-play.gif" alt="Pip, Moss and Ember weaving between branches in three different forests, rendered by the mod." width="500" />
+  <img src="assets/readme/orbit-play.gif" alt="Pip, Moss and Ember following broad circular arcs through the forest. The f key flashes whenever a flip reverses the orbit." width="100%" />
   <br />
-  <sub>Real game simulation and mod rendering, driven by the reference pilot. Preview animation; terminal appearance and frame rate vary.</sub>
+  <sub>Twelve seconds of uninterrupted gameplay at normal speed, using the mod’s physics and renderer with scripted key presses. Longer holds reveal the orbits; key indicators below each scene show the flips. Terminal appearance and frame rate vary.</sub>
 </p>
 
 | A small escape | What you get |
