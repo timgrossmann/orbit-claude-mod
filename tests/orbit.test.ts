@@ -90,6 +90,39 @@ for (const surface of ['terminal', 'desktop']) test(`${surface}: play, pause, re
   expect((await reopened.find({ key: 'primary' }))?.text).toMatch(/Play/);
 });
 
+for (const surface of ['terminal', 'desktop']) test(`${surface}: death opens a result card over the forest and retry clears it`, async ($, on) => {
+  const { clock } = host(on, surface);
+  await start($, surface); const ui = await mount($, surface);
+  expect(await ui.find({ key: 'gameover' })).toBeUndefined();
+  await ui.press({ key: 'primary' }); await clock.advance(12000);
+  expect(await ui.find({ key: 'gameover' })).toBeDefined();
+  expect(await ui.find({ type: surface === 'terminal' ? 'Raster' : 'Svg' })).toBeDefined();
+  expect(await ui.find({ text: /0 gaps cleared/ })).toBeDefined();
+  expect(await ui.find({ text: /Personal best 7/ })).toBeDefined();
+  const held = await ui.drawn(); await clock.advance(500);
+  expect(await ui.drawn()).toEqual(held);
+  await ui.press({ key: 'primary' });
+  expect(await ui.find({ key: 'gameover' })).toBeUndefined();
+  expect((await ui.find({ key: 'primary' }))?.text).toMatch(/Flip/);
+});
+
+for (const surface of ['terminal', 'desktop']) test(`${surface}: a narrow result keeps retry and companion selection usable`, async ($, on) => {
+  const { clock } = host(on, surface);
+  const narrow = { ...props, bodyColumns: 18, scroll: { offset: 0, bodyRows: 38 } };
+  await start($, surface); const ui = await mount($, surface, narrow);
+  await ui.press({ key: 'primary' }); await clock.advance(12000);
+  expect(await ui.find({ key: 'gameover' })).toBeDefined();
+  expect((await ui.find({ key: 'primary' }))?.text).toMatch(/One more try/);
+  await ui.press({ key: 'restart' });
+  expect(await ui.find({ key: 'gameover' })).toBeUndefined();
+  await clock.advance(12000);
+  expect(await ui.find({ key: 'gameover' })).toBeDefined();
+  await ui.press({ key: 'character' });
+  expect(await ui.find({ key: 'gameover' })).toBeUndefined();
+  expect(await ui.find({ text: /Moss/ })).toBeDefined();
+  expect((await ui.find({ key: 'primary' }))?.text).toMatch(/Play/);
+});
+
 for (const surface of ['terminal', 'desktop']) test(`${surface}: a long turn opens Orbit after 30 seconds without focus or sound`, async ($, on) => {
   const { clock, state } = host(on, surface);
   await $.session.start({ cwd: '/tmp', surface, isInteractive: true });
@@ -184,7 +217,7 @@ test('a failed score save leaves retry usable and reports the limitation', async
   const { clock, state } = host(on); state.failWrite = true;
   await start($); const ui = await mount($); await ui.press({ key: 'primary' });
   await clock.advance(12000);
-  expect((await ui.find({ key: 'primary' }))?.text).toMatch(/Retry/);
+  expect((await ui.find({ key: 'primary' }))?.text).toMatch(/One more try/);
   expect(await ui.find({ text: /session only/i })).toBeDefined();
   await ui.press({ key: 'primary' }); expect((await ui.find({ key: 'primary' }))?.text).toMatch(/Flip/);
 });

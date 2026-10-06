@@ -161,7 +161,7 @@ test('a flip arriving after a collision shows game over instead of silently star
     advanceGame(expected, .017); h.state.now += 17;
     if (expected.phase === 'dead') {
       await h.press('primary');
-      assert.match(await h.primaryLabel(), /Retry/);
+      assert.match(await h.primaryLabel(), /One more try/);
       assert.equal(await h.svg(), desktopFrame(expected));
       await h.end(); return;
     }
@@ -177,9 +177,9 @@ test('a delayed flip cannot become a retry when a timer reaches game over first'
     const next = structuredClone(expected); advanceGame(next, .017); h.state.now += 17;
     if (next.phase === 'dead') {
       const gate = h.defer('clock'), press = h.press('primary'); await gate.entered;
-      await h.tick(); assert.match(await h.primaryLabel(), /Retry/);
+      await h.tick(); assert.match(await h.primaryLabel(), /One more try/);
       gate.release(); await press;
-      assert.match(await h.primaryLabel(), /Retry/, 'the pending flip must not start another run');
+      assert.match(await h.primaryLabel(), /One more try/, 'the pending flip must not start another run');
       await h.end(); return;
     }
     expected = next; await h.tick();

@@ -54,6 +54,18 @@ test('leaving the clearing or falling behind the camera ends the run', () => {
   }
 });
 
+test('the death result celebrates a beaten best, never a tie, and resets on retry', () => {
+  for (const [best, score, newBest] of [[7, 8, true], [7, 7, false], [7, 3, false], [0, 0, false]]) {
+    const game = createGame(best); act(game); game.score = score;
+    game.player.y = 1; advanceGame(game, STEP);
+    assert.equal(game.phase, 'dead');
+    assert.equal(game.newBest, newBest, `score ${score} against best ${best}`);
+    assert.equal(game.best, Math.max(best, score));
+    restart(game);
+    assert.equal(game.newBest, false);
+  }
+});
+
 test('retry restores the original course and retains only the best', () => {
   const game = createGame(8); act(game); advanceGame(game, .1); pause(game);
   restart(game);

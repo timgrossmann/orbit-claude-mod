@@ -4,6 +4,7 @@ import { layout } from '../render/scene.js';
 import { terminalFrame } from '../render/terminal.js';
 import { desktopFrame } from '../render/desktop.js';
 import { imageFrame } from '../render/pixels.js';
+import { resultCard } from '../render/result.js';
 import { createAudio } from '../audio/playback.js';
 
 const PANE = 'orbit', PREFS = 'preferences-v2', AUDIO_PREFS = 'audio-v1', AUTO_PREFS = 'auto-open-v1';
@@ -296,9 +297,16 @@ export function register(on) {
         picture = Svg({ source: desktopFrame(game), alt: `${CHARACTERS[game.character].name} in ${WORLDS[game.world].name}. Score ${game.score}. ${game.phase}.`,
           width: size.columns * 8, height: size.rows * 16 });
       } else return Text({ children: ['ORBIT needs a Claude Code terminal or Claude Desktop.'] });
-      const labels = { ready: 'Play', playing: 'Flip', paused: 'Resume', dead: 'Retry' };
-      const controls = [Button({ key: 'primary', label: `${labels[game.phase]} f`, hotkey: 'f', autoFocus: true,
-        onPress: () => control($, 'primary') })];
+      const labels = { ready: 'Play', playing: 'Flip', paused: 'Resume', dead: 'One more try' };
+      const primary = Button({ key: 'primary', label: `${labels[game.phase]} f`, hotkey: 'f', autoFocus: true,
+        onPress: () => control($, 'primary') });
+      const result = game.phase === 'dead' ? resultCard({ Box, Text }, game, size, primary) : null;
+      if (result) {
+        mounted = null;
+        picture = Box({ width: size.columns, height: size.rows, position: 'relative',
+          overflow: 'hidden', children: [picture, result.node] });
+      }
+      const controls = result?.hasRetry ? [] : [primary];
       if (game.phase === 'playing' || game.phase === 'paused') controls.push(Button({ key: 'pause',
         label: game.phase === 'paused' ? 'Resume p' : 'Pause p', hotkey: 'p', onPress: () => control($, 'pause') }));
       if (game.phase === 'paused' || game.phase === 'dead') controls.push(Button({ key: 'restart', label: 'Retry r', hotkey: 'r', onPress: () => control($, 'restart') }));

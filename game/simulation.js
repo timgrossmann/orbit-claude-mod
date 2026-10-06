@@ -16,7 +16,7 @@ export function createGame(best = 0, options = {}) {
   const game = { phase: 'ready', player, gates: [], camera: 0, score: 0, best: validBest(best),
     character, world: validWorld(options.world),
     elapsed: 0, accumulator: 0, trail: [], trailTime: 0, gateIndex: 0,
-    nextGate: player.x + 335, reason: '', taps: 0 };
+    nextGate: player.x + 335, reason: '', taps: 0, newBest: false };
   spawnGates(game);
   return game;
 }
@@ -40,6 +40,7 @@ export function pause(game, reason = 'Take your time.') {
 
 function die(game, reason) {
   game.phase = 'dead'; game.reason = reason;
+  game.newBest = game.score > game.best;
   game.best = Math.max(game.best, game.score); game.accumulator = 0;
 }
 

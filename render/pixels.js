@@ -60,6 +60,18 @@ export function pixelFrame(game, width = 160, height = 302, { gateGrid = 0 } = {
   }
   const pixels = backgrounds.get(key).slice();
   paint(pixels, width, height, scene(game, { background: false, gateGrid }));
+  if (game.phase === 'dead') {
+    // Settle the frozen scene behind the result card, using the original
+    // game's cream wash (or deep green for Inkwild). Never alter cached art.
+    const shade = game.world === 'inkwild' ? 0x26322c : 0xf7f1df;
+    for (let i = 0; i < pixels.length; i++) {
+      const color = pixels[i];
+      const r = Math.round((color >>> 16) * .4 + (shade >>> 16) * .6);
+      const g = Math.round(((color >>> 8) & 255) * .4 + ((shade >>> 8) & 255) * .6);
+      const b = Math.round((color & 255) * .4 + (shade & 255) * .6);
+      pixels[i] = (r << 16) | (g << 8) | b;
+    }
+  }
   return { width, height, pixels };
 }
 

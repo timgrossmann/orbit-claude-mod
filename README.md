@@ -38,6 +38,7 @@ One key flips your curve. Thread the gaps, keep moving, and try once more.
 | **One key** | Press `f` to flip the curve. Easy to learn; the next gap still gets you. |
 | **Original audio** | Bundled music, forest ambience and game effects, with separate music and sound controls. |
 | **Your own best** | Saved character and forest choices, plus separate local best scores for each companion. |
+| **One more try** | A small result card over the forest, with your score, personal best, and a new-record celebration. Press `f` to go again. |
 | **A break when work runs long** | Opens after Claude has been working for 30 seconds. Silently, without taking your keyboard focus. |
 
 ## Install
